@@ -13,7 +13,7 @@
  
  ### データセットのダウンロード
  
- 以下のURLから`train`及び`test`用のデータセットをダウンロードし、`EEG_grasp_and_left_data`という名前のフォルダに入れてください。  
+ 以下のURLから`train`及び`test`用のデータセットをダウンロードし、`EEG_grasp_and_left_data`という名前のフォルダに入れてください。  
  https://www.kaggle.com/c/grasp-and-lift-eeg-detection/data  
  
  ### フォルダ構成
