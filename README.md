@@ -1,7 +1,40 @@
 # Tensorflowを用いたEEGデータの機械学習
 
+- [Kaggle EEGデータセットの用意](#eeg-data)
+
 - [TensorFlowインストール手順](#tensorflow-install)
 
+<a name="eeg-data"></a>
+
+## Kaggle EEGデータセットの用意
+ - **このデータを用意しないとエラーが出ます。**  
+ - **また、このデータセットは非常にサイズが大きいので注意してください。**
+ - **この一連の作業はいづれ自動化します** 
+ 
+ ### データセットのダウンロード
+ 
+ 以下のURLから`train`及び`test`用のデータセットをダウンロードし、`EEG_grasp_and_left_data`という名前のフォルダに入れてください。  
+ https://www.kaggle.com/c/grasp-and-lift-eeg-detection/data  
+ 
+ ### フォルダ構成
+ 
+> Cnn/  
+>  ├ tensorflow352/  
+>  │　└ csv_manager.py/  
+>  │　└ eeg_cnn.py/  
+>  │　└ helper.py/  
+>  │　└ ...  
+>  └ EEG_grasp_and_left_data/  
+>　 　└ train/  
+>　 　　　└ subj1_series1_data.csv  
+>　 　　　└ subj1_series1_events.csv  
+>　 　　　└ subj1_series2_data.csv  
+>　 　　　└ ...  
+>　 　└ test/  
+>　 　　　└ subj1_series9_data.csv  
+>　 　　　└ subj1_series10_data.csv  
+>　 　　　└ ...  
+ 
 <a name="tensorflow-install"></a>
 
 ## TensorFlowインストール手順
