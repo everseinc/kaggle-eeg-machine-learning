@@ -125,53 +125,57 @@ with tf.Graph().as_default():
         loss_summary = tf.scalar_summary("cross_entropy", cross_entropy)
 
         for n in range(1, 8):
+            for m in range(1, 12):
 
-            data_manager = CsvManager([7], [n])
-            data_manager.pre_process(True)
-            data_manager.shuffle_data_and_events(REAL_IMAGE_HEIGHT)
+                data_manager = CsvManager([m], [n])
+                data_manager.pre_process(True, [2, 3, 5, 6, 7, 10, 13])
+                data_manager.shuffle_data_and_events(REAL_IMAGE_HEIGHT)
 
-            # saver
-            saver = tf.train.Saver()
+                # saver
+                saver = tf.train.Saver()
 
-            ckpt = tf.train.get_checkpoint_state('./saver_cnn_sl/train2_3/')
-            if ckpt:
-                last_model = ckpt.model_checkpoint_path
-                print("load " + last_model)
-                saver.restore(sess, last_model)
-            else:
-                sess.run(tf.initialize_all_variables())
+                ckpt = tf.train.get_checkpoint_state('./saver_cnn_sl/train2_3/')
+                if ckpt:
+                    last_model = ckpt.model_checkpoint_path
+                    print("load " + last_model)
+                    saver.restore(sess, last_model)
+                else:
+                    sess.run(tf.initialize_all_variables())
 
-            count = 0
-            correct_count = 0
+                count = 0
+                correct_count = 0
 
-            for i in range(data_manager.length - REAL_IMAGE_HEIGHT):
-                if i % RUN_INTERVAL == 0:
-                    data_set = data_manager.get_data_and_events(i, IMAGE_HEIGHT, REAL_IMAGE_HEIGHT)
+                for i in range(data_manager.length - REAL_IMAGE_HEIGHT):
+                    if i % RUN_INTERVAL == 0:
+                        data_set = data_manager.get_data_and_events(i, IMAGE_HEIGHT, REAL_IMAGE_HEIGHT)
 
-                    sess.run(train_step, {x: data_set[0], y_: data_set[1], keep_prob: KEEP_PROB})
+                        sess.run(train_step, {x: data_set[0], y_: data_set[1], keep_prob: KEEP_PROB})
 
-                    count += 1
-                    if sess.run(accuracy, {x: data_set[0], y_: data_set[1], keep_prob: 1.0}) == 1:
-                        correct_count += 1
+                        count += 1
+                        if sess.run(accuracy, {x: data_set[0], y_: data_set[1], keep_prob: 1.0}) == 1:
+                            correct_count += 1
 
-                if i % SUMMARY_INTERVAL == 0:
-                    summary = sess.run(tf.merge_all_summaries(), {x: data_set[0], y_: data_set[1], keep_prob: 1.0})
-                    train_writer.add_summary(summary, i)
-                    # summary = sess.run(tf.merge_summary([test_accuracy_summary]), {x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
-                    # test_writer.add_summary(summary, i)
+                    if i % SUMMARY_INTERVAL == 0:
+                        summary = sess.run(tf.merge_all_summaries(), {x: data_set[0], y_: data_set[1], keep_prob: 1.0})
+                        train_writer.add_summary(summary, i)
+                        # summary = sess.run(tf.merge_summary([test_accuracy_summary]), {x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
+                        # test_writer.add_summary(summary, i)
 
-                if i % PRINT_INTERVAL == 0:
-                    print('step %d' % i)
-                    print("label")
-                    print(data_set[1])
-                    print("y")
-                    print(sess.run(y, {x: data_set[0], y_: data_set[1], keep_prob: 1.0}))
-                    # print('h_pool6')
-                    # print(sess.run(h_pool6, {x: data_set[0], y_: data_set[1], keep_prob: 1.0}))
-                    print("cross_entropy")
-                    print(sess.run(cross_entropy, {x: data_set[0], y_: data_set[1], keep_prob: 1.0}))
+                    if i % PRINT_INTERVAL == 0:
+                        print('step %d' % i)
+                        print("label")
+                        print(data_set[1])
+                        print("y")
+                        print(sess.run(y, {x: data_set[0], y_: data_set[1], keep_prob: 1.0}))
+                        # print('h_pool6')
+                        # print(sess.run(h_pool6, {x: data_set[0], y_: data_set[1], keep_prob: 1.0}))
+                        print("cross_entropy")
+                        print(sess.run(cross_entropy, {x: data_set[0], y_: data_set[1], keep_prob: 1.0}))
 
 
-            saver.save(sess, "./saver_cnn_sl/train2_3/model.ckpt")
-            print('== accuracy ==')
-            print(correct_count / count)
+                saver.save(sess, "./saver_cnn_sl/train2_3/model.ckpt")
+                print('== accuracy ==')
+                print(correct_count / count)
+                f = open('./results/train2_3.txt', 'w')
+                f.write(str(m) + '-' + str(n) + ' : ' + str(correct_count / count))
+                f.close()
