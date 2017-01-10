@@ -12,7 +12,7 @@ FEATURE_DIM = 100
 TRAINING_LOOP = 622000
 BATCH_SIZE = 100
 SUMMARY_DIR = 'log_softmax_fc'
-SUMMARY_INTERVAL = 1000
+SUMMARY_INTERVAL = 100
 
 # mnist = input_data.read_data_sets('data', one_hot=True)
 
